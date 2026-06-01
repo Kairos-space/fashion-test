@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>时尚综合战力 · 测试</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1E1830;--bg2:#2A2142;--panel:#322651;--ink:#F2ECFF;--muted:#9B8FC4;
+    --lilac:#A98CF0;--lilac2:#C9B4FF;--gold:#E6C875;--soft:#42356B;
+    --green:#7BD6A8;--red:#F08AB0;--line:rgba(201,180,255,.16);
+    --glow:0 0 24px rgba(169,140,240,.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:0;background:
+    radial-gradient(80% 50% at 50% -5%,rgba(169,140,240,.28),transparent 60%),
+    radial-gradient(60% 40% at 90% 100%,rgba(230,200,117,.12),transparent 60%);pointer-events:none;z-index:0;}
+  body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.06;pointer-events:none;z-index:0;mix-blend-mode:overlay;}
+  .stage{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;}
+  .screen{display:none;flex:1;flex-direction:column;padding:30px 24px 40px;}
+  .screen.active{display:flex;animation:fade .45s ease both;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @keyframes pop{from{opacity:0;transform:translateY(20px) scale(.96);}to{opacity:1;transform:none;}}
+  .smallcaps{font-family:"Fraunces",serif;font-weight:500;letter-spacing:.24em;text-transform:uppercase;font-size:11px;color:var(--muted);}
+  .rule{height:1px;background:var(--line);}
+  /* start */
+  #start{justify-content:space-between;}
+  .top-row{display:flex;justify-content:space-between;align-items:center;}
+  .hero{margin-top:5vh;}
+  .hero .big{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:clamp(54px,17vw,94px);line-height:.9;
+    background:linear-gradient(120deg,var(--lilac2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 16px rgba(169,140,240,.4));}
+  .hero .zh{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-size:clamp(31px,9vw,44px);line-height:1.2;margin-top:12px;color:var(--ink);}
+  .hero .zh .accent{color:var(--lilac2);}
+  .hero .sub{margin-top:16px;font-size:14px;line-height:1.85;color:var(--muted);max-width:330px;}
+  .scene-pick{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+  .scene{background:linear-gradient(135deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:transform .16s,border-color .16s,box-shadow .16s;}
+  .scene:hover{transform:translateY(-2px);border-color:var(--lilac);box-shadow:var(--glow);}
+  .scene:active{transform:scale(.99);}
+  .scene .em{font-size:24px;flex-shrink:0;}
+  .scene .tx .t{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-size:17px;color:var(--ink);}
+  .scene .tx .d{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4;}
+  .scene .go{margin-left:auto;font-family:"Fraunces",serif;font-style:italic;color:var(--lilac2);font-size:13px;flex-shrink:0;}
+  .scene .tag-hi{font-size:9px;background:var(--gold);color:#3a2c10;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle;letter-spacing:.04em;font-weight:700;font-family:"Noto Sans SC";}
+  .grp-l{font-family:"Fraunces",serif;font-style:italic;font-size:12px;color:var(--muted);margin:14px 2px 8px;letter-spacing:.04em;}
+  /* quiz */
+  #quiz{padding-top:24px;}
+  .q-scene{font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--lilac2);margin-bottom:8px;}
+  .q-head{display:flex;align-items:center;gap:14px;}
+  .q-num{font-family:"Fraunces",serif;font-style:italic;font-size:16px;color:var(--gold);}
+  .progress{flex:1;height:7px;background:var(--soft);border-radius:999px;overflow:hidden;}
+  .progress span{display:block;height:100%;background:linear-gradient(90deg,var(--lilac),var(--gold));border-radius:999px;width:0;transition:width .4s ease;box-shadow:0 0 10px rgba(169,140,240,.6);}
+  .q-text{font-family:"Noto Sans SC",sans-serif;font-weight:700;font-size:21px;line-height:1.55;margin:26px 0 22px;min-height:96px;color:var(--ink);}
+  .opts{display:flex;flex-direction:column;gap:11px;}
+  .opt{background:linear-gradient(135deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:15px 16px;font-size:14.5px;line-height:1.5;cursor:pointer;display:flex;gap:12px;align-items:center;transition:transform .16s,border-color .16s,box-shadow .16s;}
+  .opt .dot{font-family:"Fraunces",serif;font-style:italic;color:var(--bg);background:var(--lilac2);width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:600;}
+  .opt:hover{transform:translateY(-2px);border-color:var(--lilac);}
+  .opt.pick{background:linear-gradient(135deg,var(--lilac),#8e6fe0);border-color:var(--lilac2);box-shadow:var(--glow);}
+  .opt.pick .dot{background:var(--gold);color:#3a2c10;}
+  /* panel */
+  /* draw / flip */
+  #draw{align-items:center;justify-content:center;text-align:center;}
+  .draw-scene{font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--lilac2);margin-bottom:10px;}
+  .draw-tip{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+  .perspective{perspective:1300px;margin-bottom:8px;}
+  .flipcard{width:268px;height:392px;position:relative;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.3,.1,.2,1);cursor:pointer;}
+  .flipcard.flipped{transform:rotateY(180deg);}
+  .flipcard .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;overflow:hidden;}
+  .flipcard .back{background:linear-gradient(150deg,#3a2d63,#7a63c4 55%,#9d86e6);box-shadow:0 18px 44px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+  .flipcard .back .bk-frame{position:absolute;inset:14px;border:1px solid rgba(255,255,255,.4);border-radius:14px;}
+  .flipcard .back .bk-logo{font-family:"Fraunces",serif;font-style:italic;font-size:52px;color:#fff;position:relative;}
+  .flipcard .back .bk-sub{font-family:"Fraunces",serif;letter-spacing:.3em;font-size:10px;color:rgba(255,255,255,.7);position:relative;}
+  .flipcard .back::after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence baseFrequency=%270.9%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E");opacity:.07;}
+  .flipcard .front{transform:rotateY(180deg);background:linear-gradient(160deg,var(--panel),var(--bg2));border:2px solid var(--rc,#A98CF0);box-shadow:0 18px 48px rgba(0,0,0,.4);display:flex;flex-direction:column;padding:18px 17px;}
+  .fc-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .fc-rare{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:26px;color:var(--rc);line-height:1;}
+  .fc-pow{text-align:right;font-size:10px;color:var(--muted);line-height:1.5;}
+  .fc-pow b{font-family:"Fraunces",serif;font-style:italic;color:var(--gold);font-size:20px;display:block;}
+  .fc-emoji{font-size:62px;text-align:center;margin:14px 0 6px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3));}
+  .fc-name{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC";font-size:26px;text-align:center;color:var(--ink);line-height:1.12;padding:0 4px;}
+  .fc-end{font-size:12px;line-height:1.7;color:#CFC2F0;text-align:center;margin-top:12px;flex:1;display:flex;align-items:center;}
+  .fc-foot{font-family:"Fraunces",serif;font-style:italic;font-size:10px;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:9px;}
+  .front.foil::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.5) 45%,rgba(230,200,117,.4) 50%,rgba(211,138,176,.35) 56%,transparent 70%);background-size:300% 300%;animation:sheen 3s linear infinite;mix-blend-mode:screen;}
+  @keyframes sheen{0%{background-position:120% 0;}100%{background-position:-120% 0;}}
+  .poster-mask{position:fixed;inset:0;background:rgba(14,10,28,.72);backdrop-filter:blur(5px);z-index:100;display:none;flex-direction:column;align-items:center;padding:20px 16px 28px;overflow-y:auto;}
+  .poster-mask.show{display:flex;}
+  .poster{width:330px;flex-shrink:0;background:linear-gradient(165deg,#241c3c,#150f28);border-radius:22px;padding:26px 24px 22px;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5);border:1px solid rgba(201,180,255,.18);}
+  .poster .pg{position:absolute;top:-70px;right:-50px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(169,140,240,.34),transparent 70%);}
+  .poster .pg2{position:absolute;bottom:-80px;left:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(230,200,117,.22),transparent 70%);}
+  .poster .pkr{position:relative;font-family:"Fraunces",serif;font-style:italic;letter-spacing:.2em;text-transform:uppercase;font-size:9.5px;color:var(--muted);}
+  .poster .pscene{position:relative;font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--lilac2);margin-top:4px;}
+  .poster .prare{position:relative;display:flex;align-items:baseline;gap:8px;margin-top:12px;}
+  .poster .prare .tier{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:40px;color:var(--ptc,#E6C875);line-height:1;}
+  .poster .prare .pct{font-size:11.5px;color:var(--muted);}
+  .poster .prare .pct b{font-family:"Fraunces",serif;font-style:italic;color:var(--gold);font-size:14px;}
+  .poster .pname{position:relative;font-family:"ZCOOL QingKe HuangYou","Noto Sans SC";font-size:29px;color:#fff;margin-top:10px;line-height:1.14;}
+  .poster .pcanvas{position:relative;display:flex;justify-content:center;margin:10px 0 4px;}
+  .poster .ppow{position:relative;text-align:center;font-size:11.5px;color:var(--muted);}
+  .poster .ppow b{font-family:"Fraunces",serif;font-style:italic;color:var(--lilac2);font-size:15px;}
+  .poster .pend{position:relative;font-size:13px;line-height:1.8;color:#D9CEF5;margin-top:14px;border-left:2px solid var(--gold);padding-left:11px;}
+  .poster .pfoot{position:relative;margin-top:18px;padding-top:12px;border-top:1px solid rgba(201,180,255,.16);display:flex;justify-content:space-between;align-items:center;}
+  .poster .pfoot .ft{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC";font-size:13px;color:#fff;}
+  .poster .pfoot .fs{font-family:"Fraunces",serif;font-style:italic;font-size:10px;color:var(--muted);}
+  .poster-actions{width:330px;margin-top:14px;display:flex;flex-direction:column;gap:10px;flex-shrink:0;}
+  .poster-hint{color:#fff;opacity:.8;font-size:12px;margin-top:12px;text-align:center;}
+  .confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:80;border-radius:2px;pointer-events:none;}
+
+  #panel{padding-top:22px;}
+  .pl-title{font-family:"Fraunces",serif;font-style:italic;font-size:12px;color:var(--muted);text-align:center;letter-spacing:.1em;}
+  .pl-verdict{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-size:clamp(30px,8.5vw,40px);text-align:center;margin-top:8px;line-height:1.15;
+    background:linear-gradient(110deg,var(--lilac2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s .05s both;}
+  .reveal-toggle{width:100%;margin-top:18px;background:transparent;border:1.5px dashed var(--lilac);color:var(--lilac2);border-radius:14px;padding:14px;font-family:"Noto Sans SC";font-size:14.5px;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .reveal-toggle:active{background:rgba(169,140,240,.12);}
+  .reveal-toggle .chev{transition:transform .3s;display:inline-block;}
+  .reveal-toggle.open .chev{transform:rotate(180deg);}
+  .persona{margin-top:16px;animation:pop .4s both;}
+  .persona .seg{margin-bottom:16px;}
+  .persona .seg .lab{font-family:"Fraunces",serif;font-style:italic;font-size:11.5px;letter-spacing:.06em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+  .persona .seg .lab::before{content:"";width:14px;height:1px;background:var(--gold);display:inline-block;}
+  .persona .seg p{font-size:14.5px;line-height:1.95;color:var(--ink);}
+  .persona .seg.why p{color:#D9CEF5;}
+  .persona .seg.vs{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;}
+  .persona .seg.vs p{font-size:13.5px;line-height:1.85;color:#CFC2F0;}
+  .persona .seg.end p{font-style:normal;color:var(--lilac2);font-weight:500;line-height:1.9;}
+  .pl-sub{font-size:13.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6;padding:0 6px;animation:pop .6s .14s both;}
+  .unlock{margin:14px auto 0;width:fit-content;background:linear-gradient(120deg,rgba(230,200,117,.18),rgba(169,140,240,.18));border:1px solid var(--gold);border-radius:999px;padding:6px 16px;font-size:12.5px;color:var(--gold);animation:pop .6s .2s both;display:none;}
+  .unlock.show{display:block;}
+  .unlock b{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC";}
+  .radar-wrap{display:flex;justify-content:center;margin:6px 0 2px;animation:pop .7s .24s both;}
+  .lv-tag{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:0;font-size:12px;color:var(--muted);animation:pop .6s .3s both;}
+  .lv-tag b{font-family:"Fraunces",serif;font-style:italic;color:var(--lilac2);}
+  .rare-line{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px;animation:pop .6s .34s both;}
+  .rare-line b{font-family:"Fraunces",serif;font-style:italic;color:var(--gold);font-size:15px;}
+  .sect-l{font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--muted);margin:22px 0 12px;}
+  .stats{display:flex;flex-direction:column;gap:11px;animation:pop .6s .4s both;}
+  .stat .sl{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px;}
+  .stat .sl .nm{color:var(--ink);font-weight:500;}
+  .stat .sl .vl{font-family:"Fraunces",serif;font-style:italic;color:var(--gold);font-size:15px;}
+  .stat .track{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;}
+  .stat .track i{display:block;height:100%;background:linear-gradient(90deg,var(--lilac),var(--lilac2));border-radius:999px;width:0;transition:width 1s cubic-bezier(.3,.8,.3,1);box-shadow:0 0 8px rgba(169,140,240,.5);}
+  .buffs{display:grid;grid-template-columns:1fr 1fr;gap:10px;animation:pop .6s .48s both;}
+  .buff{border-radius:14px;padding:12px 13px;background:var(--panel);border:1px solid var(--line);border-left-width:4px;border-left-color:var(--muted);}
+  .buff.good{border-left-color:var(--green);}.buff.bad{border-left-color:var(--red);}
+  .buff .bt{font-weight:700;font-size:13px;display:flex;align-items:center;gap:5px;color:var(--ink);}
+  .buff.good .bt::before{content:"\u25B2";color:var(--green);font-size:9px;}
+  .buff.bad .bt::before{content:"\u25BC";color:var(--red);font-size:9px;}
+  .buff .bd{font-size:11px;line-height:1.5;color:var(--muted);margin-top:5px;}
+  .pl-actions{margin-top:26px;display:flex;flex-direction:column;gap:11px;animation:pop .6s .56s both;}
+  .btn{width:100%;border:none;border-radius:999px;font-family:"Noto Sans SC",sans-serif;font-weight:700;font-size:16px;padding:18px;cursor:pointer;transition:transform .15s,opacity .15s;}
+  .btn.primary{background:linear-gradient(120deg,var(--lilac),var(--gold));color:#231a3a;box-shadow:var(--glow);}
+  .btn.primary:active{transform:scale(.97);opacity:.94;}
+  .btn .en{font-family:"Fraunces",serif;font-style:italic;font-weight:500;opacity:.65;margin-left:8px;font-size:15px;}
+  .btn.ghost{background:transparent;color:var(--lilac2);border:1.5px solid var(--lilac);}
+  .credit{text-align:center;font-family:"Fraunces",serif;font-style:italic;font-size:11.5px;color:var(--muted);margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <section class="screen active" id="start">
+    <div>
+      <div class="top-row"><span class="smallcaps">Fashion Power Test</span><span class="smallcaps">8 Scenes</span></div>
+      <div class="rule" style="margin-top:10px"></div>
+    </div>
+    <div class="hero">
+      <div class="big">STAT</div>
+      <div class="zh">测测你的<br><span class="accent">时尚综合战力</span></div>
+      <div class="sub">同样的你，被空投进不同的修罗场。选个最让你来劲的局，6 道题扒光你的时尚底裤。</div>
+      <div class="grp-l">日常修罗场</div>
+      <div class="scene-pick" id="sceneDaily"></div>
+      <div class="grp-l">高光名利场 · 进阶</div>
+      <div class="scene-pick" id="sceneHi"></div>
+    </div>
+    <div class="credit">FASHION POWER TEST &middot; 选个场进场开撕</div>
+  </section>
+
+  <section class="screen" id="quiz">
+    <div class="q-scene" id="qScene"></div>
+    <div class="q-head"><span class="q-num" id="qNum">01 / 06</span><div class="progress"><span id="bar"></span></div></div>
+    <div class="q-text" id="qText"></div>
+    <div class="opts" id="opts"></div>
+  </section>
+
+  <section class="screen" id="draw">
+    <div class="draw-scene" id="drawScene"></div>
+    <div class="draw-tip" id="drawTip">命运为你抽出了一张——<br>点击卡片翻开</div>
+    <div class="perspective"><div class="flipcard" id="flipcard" onclick="flipCard()">
+      <div class="face back"><div class="bk-frame"></div><div class="bk-logo">FTI</div><div class="bk-sub">FASHION POWER</div></div>
+      <div class="face front" id="cardFront"></div>
+    </div></div>
+    <button class="btn primary" id="toPanelBtn" style="display:none;width:280px;margin-top:8px" onclick="show('panel')">查看完整面板<span class="en">Detail</span></button>
+    <div class="credit">点击翻牌，揭晓你的时尚人格</div>
+  </section>
+  <section class="screen" id="panel">
+    <div class="pl-title" id="plTitle">YOUR FASHION PANEL</div>
+    <div class="pl-verdict" id="verdict"></div>
+    <div class="unlock" id="unlock"></div>
+    <div class="radar-wrap"><canvas id="radar" width="600" height="500" style="width:320px;height:267px"></canvas></div>
+    <div class="lv-tag" id="lvTag"></div>
+    <div class="rare-line" id="rareLine"></div>
+    <div class="sect-l">属性数值 / Stats</div>
+    <div class="stats" id="statList"></div>
+    <div class="sect-l">挂载中的 BUFF / DEBUFF</div>
+    <div class="buffs" id="buffList"></div>
+    <button class="reveal-toggle" id="revealToggle" onclick="togglePersona()">点开看完整人格解读 <span class="chev">▾</span></button>
+    <div class="persona" id="persona" style="display:none;"></div>
+    <div class="pl-actions">
+      <button class="btn primary" onclick="makePoster()">生成炫耀海报<span class="en">Poster</span></button>
+      <button class="btn primary" onclick="copyResult()">鸣枪谢幕<span class="en">Flex</span></button>
+      <button class="btn ghost" onclick="restart()">换个修罗场再战</button>
+    </div>
+    <div class="credit">FASHION POWER TEST</div>
+  </section>
+</div>
+<div class="poster-mask" id="posterMask">
+  <div class="poster" id="poster"></div>
+  <div class="poster-actions">
+    <button class="btn primary" onclick="savePoster()">保存图片<span class="en">Save</span></button>
+    <button class="btn ghost" style="color:#fff;border-color:#fff" onclick="closePoster()">关闭</button>
+  </div>
+  <div class="poster-hint">存不下来也没关系，直接长按 / 截图这张卡片就行</div>
+</div>
+<div id="toast" style="position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(20px);background:#0e0a1c;color:#fff;padding:13px 24px;border-radius:999px;font-size:13px;opacity:0;transition:all .3s;z-index:90;pointer-events:none;border:1px solid var(--line);">x</div>
+
+<script>
+var SCENES={"ex":{"name":"前任婚礼","emoji":"💔","desc":"收到请柬那一刻，衣柜里的胜负欲当场起飞","q":[{"dim":"穿搭杀伤力","t":"收到请柬的瞬间，你的第一念头是——","o":[{"t":"这一场，老子必须美得像去继承他家遗产的","s":3},{"t":"穿得克制且高级，让他和新娘一眼看懂什么叫高攀不起","s":2},{"t":"经典小黑裙低调路过，挑不出毛病，但也犯不着为他费心思","s":1},{"t":"套件舒服的旧卫衣，他不配我浪费任何一件好看的衣服","s":0}]},{"dim":"钱包大坝","t":"为这场局，你准备怎么调度装备？","o":[{"t":"连夜联系买手店调当季秀款，这笔钱算在精神损失费里","s":0},{"t":"把压箱底最贵那件中古孤品请出来，让凡夫俗子开开眼","s":1},{"t":"现有的私服随便重组，份子钱已经够冤，一分不想多花","s":2},{"t":"一分不花。素面朝天去，就是对他俩审美最好的降维打击","s":3}]},{"dim":"装腔雷达","t":"桌上有人上下打量你：「这衣服挺特别，什么牌子？」你——","o":[{"t":"从面料、设计师一路科普到秀场轶事，顺便指出她那件的线头","s":3},{"t":"微微一笑报个小众牌名，留一个让人接不上话的智商距离感","s":2},{"t":"「网上捞的，名字挺难念。」一句话把天聊死","s":1},{"t":"「早忘了。」继续吃菜，懒得开这种无聊的科普局","s":0}]},{"dim":"野生显眼包","t":"进门和前任四目相对，你的本能反应是——","o":[{"t":"当他是空气，踩着高跟直奔新娘，热情合影当全场主角","s":3},{"t":"带着无懈可击的冷笑从他面前飘过，用气场把他压进尘埃","s":2},{"t":"正常点头，然后直奔甜品台，优雅地把自己藏进人群","s":1},{"t":"默默在最边缘的桌子坐下，老子今天就是个纯吃席观众","s":0}]},{"dim":"敢不敢穿","t":"明知道会遇到一堆熟人，你今天敢穿多狠？","o":[{"t":"穿那件最大胆的，就要让全场都偷瞄、都不敢直视","s":3},{"t":"留个抓眼的亮点，敢出挑但不至于被议论","s":2},{"t":"挑个稳妥好看的，不想成为别人嘴里的谈资","s":1},{"t":"怎么不起眼怎么来，今天只想安全度过","s":0}]},{"dim":"极速剁手","t":"散场前要不要发个朋友圈？","o":[{"t":"照片在洗手间就精修好了，卡在散场那秒发，配乐极度讽刺","s":3},{"t":"挑一张最松弛的原图直出，配一句风轻云淡但刀刀见血的文案","s":2},{"t":"懒得即时发，回家心情好再考虑扔张照片在群里","s":1},{"t":"绝不发。让他猜我今天开不开心，这才是最高级的折磨","s":0}]}]},"job":{"name":"入职第一天","emoji":"💼","desc":"职场初舞台，第一眼就要把「别惹我」立住","q":[{"dim":"穿搭杀伤力","t":"入职第一天，你的着装中心思想是——","o":[{"t":"剪裁利落里藏着不好惹的锋芒，让人一眼觉得「这人动不得」","s":3},{"t":"低调的老钱风，先把「专业」和「靠谱」的门面立稳","s":2},{"t":"主打一个舒适，只要不是睡衣，就对得起老板那点窝囊费","s":1},{"t":"穿平时的便服，反正还在试用期，转正了再跟你们卷穿搭","s":0}]},{"dim":"钱包大坝","t":"为了给新同事一个下马威，你——","o":[{"t":"刷爆额度，全套大牌通勤装一步到位，势头绝对不能输","s":0},{"t":"翻出前几年面试攒下的像样旧包，出来撑个基本盘","s":1},{"t":"旧衣重组，现有的够搭出前两周的体面就行","s":2},{"t":"没拿到第一笔工资前，任何置装消费都是给资本家打白工","s":3}]},{"dim":"装腔雷达","t":"茶水间新同事盯着你的包：「这设计挺小众啊，哪买的？」你——","o":[{"t":"顺势从北欧美学、手工工艺一路讲到这牌子为什么值这个价","s":3},{"t":"「代购捞的，还行。」给俩关键词，剩下让她自己回去搜","s":2},{"t":"「网上随便买的，名字记不清了。」一句话终止社交","s":1},{"t":"「啊？不知道，别人送的。」对衣服历史一无所知，也不感兴趣","s":0}]},{"dim":"野生显眼包","t":"全员早会上老板让你站起来做自我介绍，你——","o":[{"t":"大方起身环视全场，用顶级仪态和一句话让所有人记住你","s":3},{"t":"落落大方点头微笑，不怯场，但也绝不抢老板风头","s":2},{"t":"稍微欠身挥个手，赶紧坐下把焦点还回去","s":1},{"t":"能不站就不站，最好就地隐形，低调融入背景板","s":0}]},{"dim":"敢不敢穿","t":"第一天就把真实穿衣风格亮出来，你敢吗？","o":[{"t":"敢，我是谁第一天就让他们看清，藏着憋屈","s":3},{"t":"亮一点点，剩下的等混熟了再放开","s":2},{"t":"先收着，观察这儿的画风再决定","s":1},{"t":"彻底藏好个性，跟大家穿得一模一样最安全","s":0}]},{"dim":"极速剁手","t":"午休发现写字楼下的买手店在清仓，你——","o":[{"t":"饭不吃了，冲！在真正的好货面前，手慢就是最大的原罪","s":3},{"t":"过去扫一眼，如果有常年不打折的经典款就当机立断","s":2},{"t":"先加个关注，打算等下班或周末再来逛","s":1},{"t":"忍住不去。第一天就为买衣服开溜，传出去成何体统","s":0}]}]},"reunion":{"name":"十年同学会","emoji":"🍻","desc":"青春散场十年，这一身衣服就是你的社会账单","q":[{"dim":"穿搭杀伤力","t":"老同学见面的战袍，你的核心诉求是——","o":[{"t":"浑然天成的高级，看不出 Logo，但处处写着「我过得很好」","s":3},{"t":"锋芒毕露的惊艳，从进门那秒起就要拿下全场最高分","s":2},{"t":"轻松不紧绷，穿得像走红毯反而显得用力过猛","s":1},{"t":"穿平日最爱那件，我是去叙旧的，不是去走秀的","s":0}]},{"dim":"钱包大坝","t":"面对这顿大型攀比饭局，你愿意付出多少？","o":[{"t":"特意买了一套平时根本穿不着的昂贵衣服，气势不能断","s":0},{"t":"把全身最贵那件高定请出来，今天必须派它去站台","s":1},{"t":"旧衣新搭，钱省下来，等会儿 AA 买单时别手软","s":2},{"t":"完全不投资。穿旧衣服去，才是对青春期社交的真正释怀","s":3}]},{"dim":"装腔雷达","t":"当年最爱嚼舌根的人开始上下扫视你，你——","o":[{"t":"主动流畅报出每件单品的设计师背景，专业到让她听不懂","s":3},{"t":"由她盯着看，微微一笑，保持一种不屑于解释的降维俯视","s":2},{"t":"假装没看见，继续低头喝茶，不接她任何挑衅的眼色","s":1},{"t":"「都是老衣服啦。」一句话敷衍，懒得陪她玩虚荣游戏","s":0}]},{"dim":"野生显眼包","t":"推开包厢门的那一刻，你的出场方式是——","o":[{"t":"大方推门「不好意思各位，稍微迟到了点！」瞬间收割目光","s":3},{"t":"带着无懈可击的笑容跟相熟的打招呼，落座自然流畅","s":2},{"t":"悄悄走进去找个中间位置坐下，等别人主动来认你","s":1},{"t":"从后门溜进去，挑个离班长和现充们最远的安静角落","s":0}]},{"dim":"敢不敢穿","t":"知道当年的人都会盯着看，你这身的尺度是——","o":[{"t":"专挑最敢的穿，就要他们倒吸一口气、回家议论我","s":3},{"t":"敢露一手，但分寸拿捏得让人挑不出错","s":2},{"t":"稳妥好看就行，不想被当成话题中心","s":1},{"t":"最低调那套，混在人群里别被特别注意到","s":0}]},{"dim":"极速剁手","t":"散场有人喊「大家加个微信，群里发合照！」你——","o":[{"t":"图已经在手机里修好了，群里第一个甩出高清无瑕九宫格","s":3},{"t":"挑一张光线最好、大家都过得去的原图发在群里","s":2},{"t":"回家泡个澡再说，现在懒得一张张翻照片","s":1},{"t":"不在群里发——我状态最好那张，只配发我自己的动态","s":0}]}]},"date":{"name":"相亲局","emoji":"🍽️","desc":"在人类早期驯服相亲对象的现场，衣服是你的盾牌","q":[{"dim":"穿搭杀伤力","t":"面对未知的相亲对象，你的策略是——","o":[{"t":"优雅且带锋芒，给对方建立「我很贵，你别轻浮」的心理门槛","s":3},{"t":"亲和力与质感并存，先把第一印象分稳稳拿捏","s":2},{"t":"极简日常，装出来的体面迟早露馅，不如坦诚相见","s":1},{"t":"随便穿。成不成靠玄学和硬条件，跟衣服没半点关系","s":0}]},{"dim":"钱包大坝","t":"为这个成败未卜的局，你愿意怎么消费？","o":[{"t":"专门做了全套造型并添置新衣，万一对方是理想型呢","s":0},{"t":"拿出一件大牌配饰，不动声色给自己加一点底气","s":1},{"t":"现有衣柜挑套最稳妥的，先去看看对方几斤几两","s":2},{"t":"拒绝任何为相亲产生的消费。八字没一撇，先捂紧钱包","s":3}]},{"dim":"装腔雷达","t":"对方笨拙地夸了句「你今天穿得真好看」，你——","o":[{"t":"顺势从剪裁细节聊到设计灵感，不动声色地展示智识","s":3},{"t":"大方说谢谢，并顺畅地把话题抛回给他的穿着，绝不冷场","s":2},{"t":"「还好吧，谢谢。」然后空气陷入长达三秒的尴尬沉默","s":1},{"t":"「顺手抓的。」真没什么故事可讲，也拒绝配合演客套戏","s":0}]},{"dim":"野生显眼包","t":"走进餐厅，迎着他的目光走过去，你——","o":[{"t":"步履沉稳，目不斜视，气场比人先一步到达桌前","s":3},{"t":"保持标准的礼貌微笑，大方入座，眼神从容","s":2},{"t":"略微低头避开对视，加快脚步赶紧把自己安顿好","s":1},{"t":"挑个最背光、不显眼的座位，免得一整晚被当展品打量","s":0}]},{"dim":"敢不敢穿","t":"第一次见面，你敢不敢穿出真实的自己？","o":[{"t":"照穿不误，连我穿衣风格都接受不了的趁早淘汰","s":3},{"t":"保留一点自己的味道，但稍微收着点","s":2},{"t":"先穿个安全大众款，别一上来就吓到人","s":1},{"t":"彻底藏起个性，怎么不出错怎么来","s":0}]},{"dim":"极速剁手","t":"买单后对方说「今天挺开心的，加个微信？」你——","o":[{"t":"二维码秒亮。朋友圈早被你当个人美术馆经营，随便他看","s":3},{"t":"大方加上，该建立新联系时从不扭捏，十分大度","s":2},{"t":"加上了，但打算回去就把他扔进不显眼的标签分组里","s":1},{"t":"加上后立刻设三天可见。摸清底细前，不提供任何公开资料","s":0}]}]},"gala":{"name":"红毯晚宴","emoji":"🎬","desc":"被邀出席的高光局，今晚你就是要被拍的那个","q":[{"dim":"穿搭杀伤力","t":"接到晚宴邀请，你的造型方针是——","o":[{"t":"造型班子连夜待命，妆发鞋履全部高定级别伺候，今晚谁都别想抢我镜头","s":3},{"t":"一件压场礼服往那儿一站，气场直接把红毯走成我的主场","s":2},{"t":"挑件能打的，不至于盖过主角，但也绝不当人群里的壁纸","s":1},{"t":"衣柜里抓件干净的就去，灯一暗谁分得清谁是谁","s":0}]},{"dim":"钱包大坝","t":"为这一晚的预算，你的态度是——","o":[{"t":"直接拿下当季高定，这种场合不烧钱留着钱过年吗","s":0},{"t":"把那件供着舍不得穿的请出山，今晚它必须出来工作","s":1},{"t":"旧礼服改个细节再战，为一晚砸一套钱我做不到","s":2},{"t":"借。高定穿一晚原样还回去，省下的钱够我笑一年","s":3}]},{"dim":"装腔雷达","t":"邻座端着香槟问「这礼服哪家的？」你——","o":[{"t":"设计师、系列、压轴第几套，连面料供应商都给她科普明白","s":3},{"t":"报个名字微微一笑，剩下的惊叹留她自己慢慢消化","s":2},{"t":"「一个朋友工作室的」一句话堵回去，不打算深聊","s":1},{"t":"「忘了诶」举杯转身，谁来酒会是为了开科普班的","s":0}]},{"dim":"野生显眼包","t":"走红毯进场那一刻，你——","o":[{"t":"放慢脚步把镜头喂饱，转身回眸定点一气呵成，仿佛走了八百遍","s":3},{"t":"不紧不慢走过去，气场拉满，但绝不刻意讨镜头","s":2},{"t":"不疾不徐走完，懒得对着长枪短炮表演","s":1},{"t":"贴着边上溜进去，这段红毯能跳过最好","s":0}]},{"dim":"敢不敢穿","t":"今晚这身的大胆程度——","o":[{"t":"高开衩、大露背、夸张廓形全招呼上，明天的热搜得有我一条","s":3},{"t":"留一个抓眼的爆点，敢露但收得住，刚好让人记一晚","s":2},{"t":"走经典优雅路线，稳妥但绝不平庸","s":1},{"t":"挑最不会被议论的那套，今晚只想平安下班","s":0}]},{"dim":"极速剁手","t":"散场后这身的高清美图，你——","o":[{"t":"现场就追着摄影师要原图，连夜精修连夜九宫格安排上","s":3},{"t":"挑一张氛围最绝的，配句轻飘飘但有分量的文案发出去","s":2},{"t":"先存着，哪天想起来再发，不急于这一时","s":1},{"t":"不发。真正的高光不靠点赞来盖章","s":0}]}]},"art":{"name":"艺术开幕","emoji":"🖼️","desc":"全场装腔浓度最高的局，穿错一件都像不懂艺术","q":[{"dim":"穿搭杀伤力","t":"去看艺术开幕，你的穿衣思路是——","o":[{"t":"一身冷门设计师，本人直接成了开幕当晚的第十七件展品","s":3},{"t":"极简到极致，全身没一个废笔，让人一看就知道我懂行","s":2},{"t":"穿得素净点，今天主角是墙上那些，不是我","s":1},{"t":"随便套一件，反正所有人眼睛都黏在画上","s":0}]},{"dim":"钱包大坝","t":"为这种场合你会专门投入吗？","o":[{"t":"入一件冷门设计师新品，正好借开幕给它办首秀","s":0},{"t":"翻出那件最有艺术含量的孤品压场","s":1},{"t":"现有的黑白灰组一组就够调性，不必另花钱","s":2},{"t":"一分不花，艺术圈又不是看谁穿得贵","s":3}]},{"dim":"装腔雷达","t":"有人凑过来「你这件很有解构主义的味道，哪个设计师？」你——","o":[{"t":"顺势把设计师的创作脉络聊一遍，再反问她怎么看这一季","s":3},{"t":"报个名字，配一个意味深长、让她不敢接话的微笑","s":2},{"t":"「忘了牌子，反正觉得好看」一句怼回去，不陪她拽词","s":1},{"t":"「随便穿的」——解构主义？我穿的时候真没想这么多","s":0}]},{"dim":"野生显眼包","t":"在画廊里，你多数时间在——","o":[{"t":"杵在最大那件装置前，自己也成了一道被围观的风景","s":3},{"t":"四处游走，时不时收获几道打量的目光，照单全收","s":2},{"t":"安静看展，尽量别挡了别人拍照的镜头","s":1},{"t":"缩在角落刷手机，盼这场社交早点散","s":0}]},{"dim":"敢不敢穿","t":"这身在「正常人」眼里——","o":[{"t":"可能有点离谱，但艺术场合不放飞一下对得起谁","s":3},{"t":"有点设计感，但还不至于把人吓退","s":2},{"t":"挺正常，不会被人在背后指指点点","s":1},{"t":"生怕显得怪，专挑了最没人会议论的那套","s":0}]},{"dim":"极速剁手","t":"看到喜欢的小众品牌快闪在打折，你——","o":[{"t":"当场下单，冷门好货今天不抢明天哭都来不及","s":3},{"t":"快速盘算一下值不值，划算就拿","s":2},{"t":"先拍下来，回去再纠结","s":1},{"t":"看看就走，钱包先按住别冲动","s":0}]}]},"rich":{"name":"豪门饭局","emoji":"🍾","desc":"一脚踏进个不属于你的圈子，衣服是你唯一的底气","q":[{"dim":"穿搭杀伤力","t":"被带进一个明显高你段位的饭局，你的穿衣策略是——","o":[{"t":"低调到看不出底牌的高级，让他们摸不透我、又不敢小看我","s":3},{"t":"挑全身最能打的一件压上，气势先把场子稳住","s":2},{"t":"穿得拿得出手就行，反正我也不打算装成他们那挂","s":1},{"t":"平时怎么穿还怎么穿，装也装不像，不如真实点","s":0}]},{"dim":"钱包大坝","t":"为了不在这种场子露怯，你愿意——","o":[{"t":"咬牙添一件硬通货大牌，至少包得撑得起这张桌","s":0},{"t":"把全身唯一一件贵的请出来，今天全靠它扛大旗","s":1},{"t":"旧衣服搭出最体面那套，钱要花在刀刃上不是饭桌上","s":2},{"t":"一分不加，靠气场不靠标签，输人不输阵","s":3}]},{"dim":"装腔雷达","t":"有人不动声色地上下扫你一遍，你——","o":[{"t":"主动把手上这只表、这个包的来头聊开，反手给他上一课","s":3},{"t":"由他看，不解释，气定神闲喝我自己那口汤","s":2},{"t":"假装没察觉，专心听他们把话聊完","s":1},{"t":"「这些我是真不懂」大大方方认了，反倒一点不慌","s":0}]},{"dim":"野生显眼包","t":"满桌都是不认识的体面人，你——","o":[{"t":"主动敬酒接话，三句话就把桌上的注意力收到自己身上","s":3},{"t":"瞅准时机插两句，存在感不抢但稳稳的","s":2},{"t":"多听少说，安静但不局促，先把局看明白","s":1},{"t":"埋头干饭，争取整晚一次都别被点到名","s":0}]},{"dim":"敢不敢穿","t":"在这种圈子里，你敢不敢穿出自己？","o":[{"t":"照穿我那套别人不敢碰的，圈子不同，但审美我不让","s":3},{"t":"保留一点自己的味道，但比平时收着点","s":2},{"t":"入乡随俗，先按他们这圈的调性来","s":1},{"t":"个性全收进口袋，怎么稳妥怎么来，先别出错","s":0}]},{"dim":"极速剁手","t":"席间听到「那家给熟客留了几件，手慢就没」，你——","o":[{"t":"立刻要联系方式，这种机会全桌就数我反应最快","s":3},{"t":"不动声色记心里，回头自己悄悄去看","s":2},{"t":"点点头，没太放心上","s":1},{"t":"跟我没关系，继续干我的饭","s":0}]}]},"annual":{"name":"公司年会","emoji":"🎉","desc":"一年一度全公司检阅，这身得镇得住场","q":[{"dim":"穿搭杀伤力","t":"年会着装，你的核心目标是——","o":[{"t":"惊艳到让平时低头干活的我，今晚被全公司重新认识一遍","s":3},{"t":"穿得有品又压得住场，让老板和同事都高看一眼","s":2},{"t":"穿得拿得出手就行，别比同事用力，也别被比下去","s":1},{"t":"反正要表演要抽奖，挑件方便活动的，别绊倒自己就行","s":0}]},{"dim":"钱包大坝","t":"为年会这一晚，你——","o":[{"t":"专门买套礼服，一年就露这一次脸，得舍得","s":0},{"t":"把压箱那件亮片的请出来站一晚岗","s":1},{"t":"旧衣服搭一搭，钱留着等年终奖到账再花","s":2},{"t":"一分不花，年会而已，犯不着为它升级装备","s":3}]},{"dim":"装腔雷达","t":"同事眼睛一亮「你这条裙子太好看了，哪买的？」你——","o":[{"t":"品牌、系列、当年怎么蹲到的，一条龙给她安利到底","s":3},{"t":"「一个小众牌」笑笑，留点让她回去搜的余地","s":2},{"t":"「网上买的，回头把链接甩你」客客气气带过","s":1},{"t":"「忘了诶」举杯敬她一下，话题就此翻篇","s":0}]},{"dim":"野生显眼包","t":"年会上突然叫你上台领奖/表演，你——","o":[{"t":"欣然上台，灯一打下来，这舞台这刻就是我的","s":3},{"t":"大大方方上去，不怯场，稳稳走完全程","s":2},{"t":"硬着头皮上，心里只想快点结束快点下来","s":1},{"t":"能推就推，最怕这种全场盯着我一个人的时刻","s":0}]},{"dim":"敢不敢穿","t":"年会这身的大胆程度——","o":[{"t":"亮片、高开衩、夸张配饰全上，年会不出位什么时候出","s":3},{"t":"比平时大胆一截，但还压在得体线内","s":2},{"t":"稳妥精致，不冒任何险","s":1},{"t":"跟平时上班差不多，低调混过去最安全","s":0}]},{"dim":"极速剁手","t":"年会前一周才发现没衣服，商场正打折，你——","o":[{"t":"下班直奔，闭着眼也能一小时拿下全套，效率惊人","s":3},{"t":"列好清单精准出击，绝不在商场耗时间","s":2},{"t":"线上线下慢慢比，能拖到最后一刻","s":1},{"t":"翻翻旧衣服算了，不为这一晚专门买","s":0}]}]}};
+var DIMS=["穿搭杀伤力","敢不敢穿","钱包大坝","野生显眼包","装腔雷达","极速剁手"];
+
+var PERSONAS={"S_W": {"name": "表面大魔王 · 兜里精光光", "strong": "穿搭杀伤力", "weak": "钱包大坝", "pic": "你每次出场都紧绷得像要上台领金像奖，连一根发丝的蓬松弧度，都是昨晚在镜子前精确测算过的。你身上很难找出一件网购打折的将就货，因为「随便」这两个字，在你的时装字典里等于当场要了你的命。", "why": "你每天过得其实挺累的。你把「老子在人群里绝对不能输」当成了续命的空气。穿得毫无死角，你才敢推门进局；而一旦现实或工作受了委屈，你唯一的发泄方式就是连夜给买手店送钱——因为只有在花钱把那件昂贵秀款据为己有的那一秒，你才觉得这失控的生活还在自己掌心里。", "vs": "嘴上轻描淡写「哎呀，好多年前的旧衣服了」，心里狂吼「这可是我透支了两个月卡债才捞到的当季秀款！」；嘴上说「今天起晚了没怎么化妆」，其实昨晚连敷了三张前男友面膜。", "end": "你不是爱乱花钱，你只是太想在人前当个「把一切都拿捏得死死的」狠角色了。不过说真的，每个月的信用卡账单，催得也是挺狠的。"}, "D_X": {"name": "叛逆怪咖 · 但重度社恐", "strong": "敢不敢穿", "weak": "野生显眼包", "pic": "你的衣柜拉开像个当代先锋艺术展，全是大红大绿、剪裁诡异、凡人穿上秒变灾难现场的怪东西。但离谱的是——你穿成这样出门，要是真有街拍长焦镜头对准你，或者路人围过来瞅你，你第一反应居然是脚趾抠地，恨不得当场隐形。", "why": "你那一身叛逆搭配，纯粹是图自己照镜子时那一口「老子真帅」的爽感。你根本不指望、甚至不屑于让凡夫俗子来懂你的品味。这种不需要靠外界掌声来确认自己行不行的心理素质，恰恰是那些天天看穿搭博主交学费的跟风者，最羡慕不来的顶级天赋。", "vs": "路人惊呼「你今天太酷了吧！」，你嘴上局促得要死「没有没有，瞎穿的」；心里忍不住翻个白眼「老子今天配这双中古鞋想了半小时，你懂个屁」。", "end": "你活得比大多数人都自由，因为你早就想通了——只要自己不尴尬，尴尬的就是整个世界。继续穿着你的奇装异服去菜市场买菜吧，反正这世上能让你花心思取悦的，也只有你自己了。"}, "Z_S": {"name": "理论界的教皇 · 穿搭界的平民", "strong": "装腔雷达", "weak": "穿搭杀伤力", "pic": "从安特卫普六君子到当季大牌的抄袭大瓜，你如数家珍，点评起别人的行头来嘴损得像个收了黑钱的毒舌评委。然而一低头看你自己——常年就是那三件毫无版型可言的基础款轮着穿，懂得比谁都多，身上穿得比谁都懒。", "why": "你非常享受那种「老子一眼就能看穿你这身衣服值几斤几两」的智商优越感。至于你自己为什么不支棱起来？因为你潜意识里觉得：我的审美境界已经在大气层了，我不需要靠衣服来证明自己。这是一种极其高级的偷懒，也是一种藏在骨子里的自负。", "vs": "嘴上对朋友的新裙子冷嘲热讽「这垫肩显得你像个橄榄球运动员」，心里其实非常享受被大家当成「人形时装维基」的虚荣；嘴上念叨「穿衣服舒服就行」，心里想的是「老子就算穿麻袋，底蕴也压死你们」。", "end": "你的嘴确实配得上一场巴黎高定秀，但你的衣柜允许你抗议了吗？挺好，省钱还挣了排面。就是偶尔也给自己的肉体一点发挥空间，别让满肚子的顶尖审美，最后都在基础款里憋成内伤。"}, "W_K": {"name": "消费主义路过你都得吐口唾沫", "strong": "钱包大坝", "weak": "极速剁手", "pic": "直播间里主播喊到缺氧，闺蜜在旁边疯狂安利，你连眼皮都不带抬一下。你买一件大衣能直接穿到它包浆，购物车对你来说不是购买清单，而是一个「过几天我就会把它亲手删掉」的草稿箱。", "why": "你的安全感从来不是衣服和 Logo 给的，是卡里的余额给的。你这辈子最讨厌被营销洗脑，别人心情不好靠买包治愈，你心情不好靠看存款治愈。你把物欲的大门关得死死的，本质上是不允许任何外界的商业陷阱来打乱你生活的节奏。这份可怕的理智很安全，但代价是，你似乎很久没体验过「为冲动买单」时那种头皮发麻的快乐了。", "vs": "面对推销嘴上平淡「这个我真的不需要」，心里甚至在冷笑「又想骗老子当韭菜」；你唯一的例外，就是遇到真正能传世的硬货，你会闷声不响直接买断，绝不发任何朋友圈炫耀。", "end": "你不是抠，你只是把消费主义这本经给念碎了。不过偶尔，也允许自己为一件「没什么卵用但就是好看」的小玩意儿脑热一次吧，毕竟当一个理智的成年人，天天紧绷着也挺累的。"}, "X_W": {"name": "破产流聚光灯", "strong": "野生显眼包", "weak": "钱包大坝", "pic": "只要你进门，全场的视线和话题就自动往你身上砸。你天生就是来当主角的，什么闪片、荧光色、反人类的大廓形，怎么高调你怎么来。当然，为了支撑你这长年演舞台剧一样的出场排面，你的钱包每个月都得经历一次「降维打击」。", "why": "「查无此人」这四个字对你来说等于慢性自杀。你极度需要通过别人的关注来确认自己的存在感。你花大价钱买单的从来不是衣服本身，而是买下了「全场都在看我」的快感。你太害怕那种淹没在人群里、没人搭理的冷清了，所以你必须用最昂贵的视觉分贝，把自己死死钉在舞台中心。", "vs": "嘴上嘻嘻哈哈「哎呀我这人就是爱热闹」，心里其实极其害怕一个人待着时的空虚和落寞；嘴上嫌弃「今天好烦怎么这么多人看我」，心里想的是「看吧看吧，老子今天就是最顶的」。", "end": "你把日子过得像一场永不散场的巴黎时装周，热闹又好看。不过散场回家卸了妆，也记得抱抱自己——没有聚光灯和掌声的你，其实也挺招人喜欢的。"}, "D_S": {"name": "胆子冲在审美前头的野性流派", "strong": "敢不敢穿", "weak": "穿搭杀伤力", "pic": "你是全场最敢以身试法的硬汉。别人还在纠结这件会不会太夸张，你已经亮片、皮草、荧光绿全套招呼上身了。问题在于——你的胆子常常跑得比审美快，导致你每次出场都有一种「虽然很有勇气，但具体勇在哪儿一言难尽」的奇妙荒诞感。", "why": "你骨子里是个绝对的行动派，比起「穿错」，你更害怕「穿得没劲」。在你这里，平庸和无聊才是真正的犯罪，翻车根本不算事儿。你宁可穿得像个行走的高速路障，也绝不肯活成衣柜里全是灰扑扑安全色的无聊成年人。这种「老子就要瞎折腾」的生命力，其实挺带劲的。", "vs": "路人欲言又止「你今天这么搭……是有什么讲究吗？」，你嘴上特硬气「对啊，解构主义懂不懂？」；心里其实也晃过一丝心虚「好像是有点像个大型火火兔……管他呢，反正回头率拉满了！」", "end": "你可能不是全场穿得最好看的，但你绝对是活得最热闹的。继续去炸街吧，审美可以慢慢练，但你这股「老子高兴就行」的粗糙胆量，多少人花一辈子都羡慕不来。"}, "S_X": {"name": "精致到牙齿的完美强迫症", "strong": "穿搭杀伤力", "weak": "野生显眼包", "pic": "你出门前的折腾劲，活像是在给自己办一场秘密的登基大典。从发丝蓬松度、内搭材质到鞋子走线，全身上下精修到找不到任何一处破绽。然后——你顶着这一身无懈可击的顶配，专挑全场最黑、最没人的角落待着，最好全程没有任何人过来搭讪。", "why": "你不是在穿衣服，你是在给自己套一件刀枪不入的防弹衣。你极度缺乏安全感，必须通过「老子今天全身找不到一个线头」来强行撑起底气。你之所以害怕被围观、害怕成为焦点，是因为你活得太紧绷了，你太害怕别人走近之后，看穿你面具底下的疲惫和脆弱。", "vs": "有人惊呼「你今天也太精致了吧！」，你嘴上赶紧摆手、疯狂后退「没有没有，上班顺手抓的」，恨不得立刻就地消失；心里其实在焦躁地抓狂「千万别走近看我！我今天眼角其实有一颗粉刺，救命！」", "end": "你把「体面」当成了自己跟自己的死命令，活得像个快要碎掉的高级瓷器。别绷着了，偶尔允许自己穿件皱巴巴的 T 恤出门吧，露出一根线头，世界也不会塌下来。"}, "K_S": {"name": "手速界特种兵 · 上身迷之现场", "strong": "极速剁手", "weak": "穿搭杀伤力", "pic": "限量、秒杀、大牌断码，你的手速全网第一，清空购物车的时间比别人眨眼还快。但每天快递堆成山，拆开套在身上一看——单看每件单品都挺厉害，凑一块儿却像三个性格完全不同的人在你身上打架。你买得惊天动地，搭得一言难尽。", "why": "你根本不是喜欢时装，你只是疯狂迷恋「拿下」那一瞬间的肾上腺素狂飙。对你来说，付款成功的提示音就是你的精神解药。至于回家怎么搭、能不能穿出门？那是明天的你才需要操心的破事。你是个活在即时满足里的短路天才，痛快是真痛快，就是钱包空得有点不管不顾。", "vs": "闺蜜怀疑地问「你又买衣服了？」，你嘴上振振有词「这次真的是刚需，不买亏一个亿！」；心里比谁都清楚，这是你本周第四个「刚需」，而衣柜里还有五个连包装都没拆的快递。", "end": "你不是不会穿，你只是根本没给自己留出「穿」的时间。剁手确实能带来短暂的爽感，但偶尔停下来翻翻衣柜吧，你会发现你其实早就赢在时尚起跑线了，只是你的货还在路上。"}, "D_W": {"name": "破产流时装实验狂人", "strong": "敢不敢穿", "weak": "钱包大坝", "pic": "你既敢穿，也真敢买。那些买手店里挂着的、凡人看一眼价签再看一眼版型就会高呼「这也能穿出门？」的怪异设计，你眼都不眨直接刷卡。你的衣柜是一个大型的、极其烧钱的时尚养蛊现场，什么风格你都敢养，唯独你的词典里从来没有「克制」两个字。", "why": "你对「老子必须跟别人不一样」有着近乎偏执的沉迷，而金钱在这种渴望面前没有任何抵抗力。每买下一件凡人看不懂的奇装异服，你都觉得自己是在给那个「有趣的灵魂」交公积金。你这辈子最怕的不是破产，而是活成一个无聊的、跟谁都穿得一样的流水线假人。", "vs": "看着镜子里那件凡人无法直视的高定，你嘴上自我催眠「这件艺术感拉满，以后利用率肯定高」；心里其实也明白——这玩意儿下半辈子大概率只能留在衣柜里当传家宝吃灰。", "end": "你把钱花成了对抗平庸的子弹，虽然经常把钱包打得千疮百孔，但也确实活得比谁都尽兴。只是偶尔也心疼心疼你的花呗吧，它最近为了你的「灵魂表达」，真的有点顶不住了。"}, "D_Z": {"name": "野生美学天选之子 · 问就是不知道", "strong": "敢不敢穿", "weak": "装腔雷达", "pic": "你一出场的行头经常能把整条街的视线点燃，乱搭、撞色、奇形怪状，偏偏被你穿出了一种莫名其妙的流浪艺术家气场。但神奇的是，只要有人凑过来问「你这件大衣什么牌子？这算什么曲风的穿搭？」，你立刻原地卡壳——因为你是真的不知道，纯凭直觉套上的。", "why": "你是典型的「老天爷赏饭吃」流派。你不看攻略、不懂秀场、不记牌子，靠的全是一股直觉抓起来就穿的野生天赋。你压根不会内耗「这么穿到底对不对、够不够专业」，因为你根本不在这条教条的赛道上玩。这种不较真的松弛感，反而让你完美避开了那些懂太多而不敢穿衣的拧巴。", "vs": "被别人疯狂追问出处，你嘴上大咧咧地坦白「网上随手抓的，牌子我真忘了」；心里甚至有些纳闷「这玩意儿还要查资料吗？穿上好看不就行了，你们活得不累吗？」", "end": "你用肉体证明了一件事：会穿衣服和懂时尚史真的不是一码事。你那点「管他呢」的野生直觉，比一肚子的穿搭公式好使多了。继续凭感觉走吧，你的天赋不需要查百度。"}, "D_K": {"name": "看透一切的冷流派藏家", "strong": "敢不敢穿", "weak": "极速剁手", "pic": "你的审美很有反骨，专挑各种奇奇怪怪、常人看都不敢看的硬核衣服穿。但离奇的是，你对当今的潮流抢购和限时秒杀毫无热情。大牌联名发售、网红直播间割韭菜，你连冷眼都懒得丢一个，抢不到就不要，绝不为了任何一件衣服跟凡人挤破头。", "why": "你极度鄙视当下「消费主义的饥饿营销」。在你眼里，去直播间拼手速、跟着倒计时焦虑付款，是全天下最掉价、最不时尚的降智行为。你骨子里有一种近乎冷酷的清高，你觉得时尚应该是自己去大浪淘沙找绝版，而不是被资本牵着鼻子当猴耍。", "vs": "看到群里疯狂尖叫「倒计时一分钟快抢！」，你嘴上平淡回一句「抢这破烂玩意儿干嘛？」；心里冷笑狂嘲「一群没长脑子的韭菜，又在为这堆流水线塑料垃圾拼命，真够丢脸的」。", "end": "你活得比那些被消费主义限时催命的人体面多了。你早就看透了，真正属于你这尊真神的风格，从来不需要靠去直播间里拼手速来证明。"}, "Z_W": {"name": "死于专业的破产老司机", "strong": "装腔雷达", "weak": "钱包大坝", "pic": "你懂得太多了，多到直接把自己的钱包逼上了绝路。你一眼就能认出任何单品的设计师师承、面料支数和稀有程度，于是你也根本无法骗自己「这个几百块的平替其实也差不多」。结果就是：越懂越挑剔，越挑剔越贵，你的钱包常年死在你那双毒辣的眼睛里。", "why": "时装知识在别人那里是省钱防踩坑的避雷针，在你这里是精准掏空储蓄的放大镜。你绝对不是盲目冲动，你每次给代购转账都是因为「太清楚它有多值」。正因为你看得懂门道，那些真正的好货对你的杀伤力是翻倍的。你是在为自己的审美认知买单，这是时装精最甜蜜的破产负担。", "vs": "跟朋友科普得头头是道「这衣服的走线和工艺现在市面上很难找了」，嘴上像个高冷老教授；心里的小人已经开始疯狂滴血狂喊「完了完了，看懂了就不能不买了，下个月只能吃土了！」", "end": "你这叫标准的「死于专业」。不过挺好，至少你每一分送给资本家的钱，都花得明明白白、毫不冤枉。就是你那双火眼金睛，偶尔也放过你的银行卡吧，它真的招架不住你这么内行。"}, "K_W": {"name": "大拇指有独立人格的下单狂魔", "strong": "极速剁手", "weak": "钱包大坝", "pic": "你的右手大拇指大概拥有它自己的独立人格。每次看到稍微对眼的东西，你的付款密码已经按完了，脑子才慢半拍追上来问一句「等等，我刚才到底买了啥？」秒杀、直播间、大促夜，你是所有商家烧香拜佛渴望遇到的那种顶级恩客：又快、又狠、且根本拦不住。", "why": "你是个把「产生欲望」和「得到满足」之间的距离缩到绝对最短的急性子。犹豫和对比对你来说简直是浪费生命——既然迟早都要买，那不如现在、立刻、让它明天就出现在我家门口。你享受的是欲望被即刻兑现那一下头皮发麻的爽感，至于下个月的账单？那是下个月的你要承担的法理责任，与今天的你无关。", "vs": "付完款看着扣款短信，嘴上懊恼「啊，我是不是又冲动消费了，真该剁手」；心里其实爽得直冒泡「太刺激了！下个月少喝两杯奶茶就把这笔钱省出来了！」（然而下个月你还会这么催眠自己）。", "end": "你活得极度痛快，从来不让自己受半分委屈。这股活在当下的劲儿其实挺迷人的，就是偶尔在点「立即支付」前，多给脑子一秒钟缓冲——你会发现，有些多余的物欲，等一秒钟它自己就憋死了。"}, "Z_X": {"name": "看破一切的假货除碎机", "strong": "装腔雷达", "weak": "野生显眼包", "pic": "你是行走的时装历史编年史，什么冷门设计师的八卦、什么中古包的鉴定细节你都门儿清，但你从来不主动在局里显摆。你平时穿得极简、低调甚至有些过分普通，懂得最多，却最不爱出风头，永远安安静静坐在最不起眼的角落，冷眼看全场的装腔作势。", "why": "你非常有心机，你纯粹靠着在心里偷偷把别人「扒个精光」来获取巨大的暗爽。你冷眼一扫，就能看出对面名媛借来的包是 A 货，隔壁潮人的联名款是个过季打折货。你根本不需要去当主角，因为在你的精神世界里，全场的妖魔鬼怪都是你在台下俯视的戏子。", "vs": "听着同桌的现充大谈特谈他新买的大牌，你嘴上保持礼貌微笑「嗯嗯，挺流行、挺好的」；心里的小人已经冷笑得快要断气「连去年的过季奥莱剪标货都拿出来吹，真是不嫌丢人」。", "end": "你把「内行」当成了自己的冷眼防线，不拿去换社交红利，也不拿去主动压人。这种不动声色的刀子，才是真正的高手。让他们去抢话筒当主角吧，全场唯一的清醒人，只有你。"}, "K_X": {"name": "线上扫货特种兵 · 线下野生大隐士", "strong": "极速剁手", "weak": "野生显眼包", "pic": "在线上，你是抢货和扫货的绝对猛将，下单快准狠，衣柜常年保持高强度上新。但离谱的是，这一身身经百战、极具审美含金量的行头，你专挑没人的时候穿。你买最贵的独立设计师单品，然后穿着它在家吃泡面，或者凌晨两点去楼下便利店买盒牛奶。你为「占有」疯狂，但对「被看」彻底绝缘。", "why": "你的时尚快乐闭环非常纯粹且健康：看中、拿下、私下穿好、自己照镜子美到——整个过程不需要任何第二双眼睛的参与。你不靠别人的目光和社会评价来续命，购物对你来说是一种完全私密的自我款待。你囤的不是衣服，是一个个只属于你自己的安全避难所。", "vs": "朋友看着你满屋子没怎么穿出门的衣服叹气「买这么多你穿给谁看啊？」，你嘴上敷衍「自己看着高兴呗」；心里其实绝对真心「全世界最值得老子花心思取悦的，本来就只有我自己」。", "end": "你把消费过成了一件最纯粹的私事，不为攀比、不为炫耀，只为换那一口自己的高兴。这种「我的快乐老子自己说了算」的活法，虽然费钱，但其实比谁都通透。"}};
+var PORDER=["S_W","D_X","Z_S","W_K","X_W","D_S","S_X","K_S","D_W","D_Z","D_K","Z_W","K_W","Z_X","K_X"];
+function matchPersona(strong,weak){
+  for(var i=0;i<PORDER.length;i++){var p=PERSONAS[PORDER[i]];if(p.strong===strong&&p.weak===weak)return p;}
+  for(var i=0;i<PORDER.length;i++){var p=PERSONAS[PORDER[i]];if(p.strong===strong)return p;}
+  for(var i=0;i<PORDER.length;i++){var p=PERSONAS[PORDER[i]];if(p.weak===weak)return p;}
+  return PERSONAS["S_W"];
+}
+
+var DAILY=["ex","job","reunion","date"], HI=["gala","art","rich","annual"];
+
+var VERDICT={
+ "穿搭杀伤力":{t:"高级感大魔王",s:"审美在你这儿不是选择，是降维打击。旁人照着抄都只能抄到你的假领子"},
+ "敢不敢穿":{t:"行走的胆量本量",s:"别人衣柜挂着「万一被笑」，你衣柜挂着「就要你记住」。没什么不敢上身的"},
+ "钱包大坝":{t:"铁公鸡终结者",s:"直播间喊破喉咙也别想骗你一分钱。物欲很贵，但你的铁石心肠更贵"},
+ "野生显眼包":{t:"行走的追光灯",s:"你一进门，周围的空气和视线就自动向你坍塌。低调这辈子与你无缘"},
+ "装腔雷达":{t:"人形假货粉碎机",s:"设计、秀场、师承张口就来。借来的大牌和投机取巧在你眼里全透明"},
+ "极速剁手":{t:"手速界野生欧皇",s:"限量和秒杀在你面前，不过是一场属于大拇指的光速演习"}
+};
+var BUFFLIB={
+ "穿搭杀伤力_hi":{good:1,t:"老天爷赏饭吃",d:"随手一抓套上都被问链接，跟风者永远在交学费"},
+ "穿搭杀伤力_lo":{good:0,t:"穿搭靠天意",d:"搭配全看当天起不起得来。对了是奇迹，错了是日常"},
+ "敢不敢穿_hi":{good:1,t:"百无禁忌",d:"别人不敢碰的颜色和廓形，到你身上全成了风格"},
+ "敢不敢穿_lo":{good:0,t:"安全牌死忠粉",d:"永远不会出错，但也永远和惊艳保持两公里安全距离"},
+ "钱包大坝_hi":{good:1,t:"铁石心肠",d:"对任何营销滤镜和最后一件天然免疫，钱包稳如泰山"},
+ "钱包大坝_lo":{good:0,t:"韭菜体质 MAX",d:"购物车是你的情绪垃圾桶，一焦虑就容易为溢价大牌买单"},
+ "野生显眼包_hi":{good:1,t:"自带抓马结界",d:"无论去哪，进门三秒自动夺走全场话题的绝对 C 位"},
+ "野生显眼包_lo":{good:0,t:"人群保护色",d:"穿得再用心也容易被当背景板，存在感长期告急"},
+ "装腔雷达_hi":{good:1,t:"装腔克星",d:"识货眼光极毒，A 货和劣质剪裁在你面前自动拉响警报"},
+ "装腔雷达_lo":{good:0,t:"故事绝缘体",d:"穿了一身好衣服，一被问出处永远只会说就挺好看的"},
+ "极速剁手_hi":{good:1,t:"网速活化石",d:"限量、断货、手慢无？这些词在你的手速面前从来不成立"},
+ "极速剁手_lo":{good:0,t:"网速吊车尾",d:"每次点进结算的前一秒，屏幕永远在无情提示商品已售罄"}
+};
+// 隐藏称号（按综合战力档解锁）
+function unlockTitle(power,top){
+  if(power>=88)return {t:"SSR · 时尚天选之人",d:"六维全面碾压，全网难寻"};
+  if(power>=74)return {t:"SR · 行走的人间富贵花",d:"哪个场子都镇得住"};
+  if(power>=58)return {t:"R · 有点东西的潜力股",d:"再磕一磕就起飞"};
+  return null;
+}
+
+
+var RC={SSR:"#E6C875",SR:"#C9B4FF",R:"#A98CF0",N:"#9B8FC4"};
+function tierOf(power){if(power>=88)return "SSR";if(power>=74)return "SR";if(power>=58)return "R";return "N";}
+var _drawn=null;
+var sceneKey=null,idx=0,scores={};
+function sceneCard(k){
+  var s=SCENES[k];
+  return "<div class='scene' onclick=\"startQuiz('"+k+"')\"><span class='em'>"+s.emoji+"</span><span class='tx'><span class='t'>"+s.name+"</span><span class='d'>"+s.desc+"</span></span><span class='go'>GO</span></div>";
+}
+function renderScenes(){
+  document.getElementById("sceneDaily").innerHTML=DAILY.map(sceneCard).join("");
+  document.getElementById("sceneHi").innerHTML=HI.map(sceneCard).join("");
+}
+function startQuiz(k){
+  sceneKey=k;idx=0;scores={};DIMS.forEach(function(d){scores[d]=0;});
+  document.getElementById("qScene").textContent="场景 · "+SCENES[k].name;
+  show("quiz");renderQ();
+}
+function show(id){var s=document.querySelectorAll(".screen");for(var i=0;i<s.length;i++)s[i].classList.remove("active");document.getElementById(id).classList.add("active");window.scrollTo(0,0);}
+function renderQ(){
+  var item=SCENES[sceneKey].q[idx];
+  document.getElementById("qNum").textContent=("0"+(idx+1)).slice(-2)+" / 06";
+  document.getElementById("bar").style.width=(idx/6*100)+"%";
+  document.getElementById("qText").textContent=item.t;
+  var box=document.getElementById("opts");box.innerHTML="";var L=["A","B","C","D"];
+  // 选项乱序，防作弊
+  var order=[0,1,2,3].sort(function(){return Math.random()-0.5;});
+  for(var i=0;i<4;i++){(function(op,i){
+    var d=document.createElement("div");d.className="opt";
+    d.innerHTML="<span class='dot'>"+L[i]+"</span><span>"+op.t+"</span>";
+    d.onclick=function(){pick(item.dim,op,d);};box.appendChild(d);
+  })(item.o[order[i]],i);}
+}
+function pick(dim,op,el){
+  el.classList.add("pick");scores[dim]+=op.s;
+  document.getElementById("bar").style.width=((idx+1)/6*100)+"%";
+  setTimeout(function(){idx++;if(idx<6)renderQ();else finish();},240);
+}
+function normVal(raw){var v=Math.round(15+(raw/3)*84);return Math.max(8,Math.min(99,v));}
+function finish(){
+  var vals={};DIMS.forEach(function(d){vals[d]=normVal(scores[d]);});
+  var top=DIMS[0];DIMS.forEach(function(d){if(vals[d]>vals[top])top=d;});
+  var lo=DIMS[0];DIMS.forEach(function(d){if(vals[d]<vals[lo])lo=d;});
+  var power=Math.round(DIMS.reduce(function(s,d){return s+vals[d];},0)/DIMS.length);
+  document.getElementById("plTitle").textContent=SCENES[sceneKey].name.toUpperCase()+" · YOUR PANEL";
+  var persona=matchPersona(top,lo);
+  document.getElementById("verdict").textContent=persona.name;
+  var _ptg=document.getElementById("persona");_ptg.style.display="none";var _btn=document.getElementById("revealToggle");if(_btn){_btn.classList.remove("open");_btn.firstChild.textContent="点开看完整人格解读 ";}
+  _ptg.innerHTML=
+    "<div class='seg pic'><div class='lab'>时尚画像</div><p>"+persona.pic+"</p></div>"+
+    "<div class='seg why'><div class='lab'>而这说明</div><p>"+persona.why+"</p></div>"+
+    "<div class='seg vs'><div class='lab'>嘴上 vs 心里</div><p>"+persona.vs+"</p></div>"+
+    "<div class='seg end'><div class='lab'>说到底</div><p>"+persona.end+"</p></div>";
+  var ut=unlockTitle(power,top);
+  var uel=document.getElementById("unlock");
+  if(ut){uel.innerHTML="\u2728 解锁隐藏称号　<b>"+ut.t+"</b>";uel.classList.add("show");}else{uel.classList.remove("show");}
+  document.getElementById("lvTag").innerHTML="综合战力 <b>"+power+"</b>　·　最强 <b>"+top+"</b>　·　短板 <b>"+lo+"</b>";
+  // 稀有度：综合战力越极端越稀有（粗略映射）
+  var rarePct=(power>=88||power<=30)?(Math.max(0.6,(power>=88?(100-power):power)/9)).toFixed(1):(8+Math.abs(power-58)/3).toFixed(1);
+  document.getElementById("rareLine").innerHTML="你这套战力分布，全网大约只有 <b>"+rarePct+"%</b> 的人撞型";
+  drawRadar(vals,top);
+  var sl=document.getElementById("statList");sl.innerHTML="";
+  var sorted=DIMS.slice().sort(function(a,b){return vals[b]-vals[a];});
+  sorted.forEach(function(d){
+    var row=document.createElement("div");row.className="stat";
+    row.innerHTML="<div class='sl'><span class='nm'>"+d+"</span><span class='vl'>"+vals[d]+"</span></div><div class='track'><i></i></div>";
+    sl.appendChild(row);setTimeout(function(){row.querySelector("i").style.width=vals[d]+"%";},80);
+  });
+  var bl=document.getElementById("buffList");bl.innerHTML="";var chosen=[];
+  function ab(key){var b=BUFFLIB[key];if(b)chosen.push(b);}
+  ab(top+"_hi");ab(sorted[1]+"_hi");ab(lo+"_lo");
+  if(vals["钱包大坝"]<=25&&top!=="钱包大坝")ab("钱包大坝_lo");
+  var seen={},out=[];chosen.forEach(function(b){if(b&&!seen[b.t]){seen[b.t]=1;out.push(b);}});out=out.slice(0,4);
+  out.forEach(function(b){var el=document.createElement("div");el.className="buff "+(b.good?"good":"bad");el.innerHTML="<div class='bt'>"+b.t+"</div><div class='bd'>"+b.d+"</div>";bl.appendChild(el);});
+  window._p={scene:SCENES[sceneKey].name,verdict:persona.name,vals:vals,power:power,top:top,lo:lo,buffs:out,unlock:ut,rare:rarePct,persona:persona,tier:tierOf(power)};
+  prepareDraw();
+  show("draw");
+}
+function drawRadar(vals,top){
+  var cv=document.getElementById("radar"),ctx=cv.getContext("2d");
+  var W=cv.width,H=cv.height,cx=W/2,cy=H/2+12,R=Math.min(W,H)/2-78,n=DIMS.length;
+  ctx.clearRect(0,0,W,H);
+  function pt(i,r){var a=-Math.PI/2+i*2*Math.PI/n;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+  // glow rings
+  for(var g=1;g<=4;g++){ctx.beginPath();for(var i=0;i<=n;i++){var p=pt(i%n,R*g/4);if(i===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);}ctx.strokeStyle="rgba(201,180,255,"+(0.10+g*0.04)+")";ctx.lineWidth=1.4;ctx.stroke();}
+  for(var i=0;i<n;i++){var p=pt(i,R);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p[0],p[1]);ctx.strokeStyle="rgba(201,180,255,.14)";ctx.lineWidth=1;ctx.stroke();}
+  // data area
+  var anim={v:0};
+  function frame(t){
+    anim.v=Math.min(1,anim.v+0.06);
+    ctx.clearRect(0,0,W,H);
+    for(var g=1;g<=4;g++){ctx.beginPath();for(var i=0;i<=n;i++){var p=pt(i%n,R*g/4);if(i===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);}ctx.strokeStyle="rgba(201,180,255,"+(0.10+g*0.04)+")";ctx.lineWidth=1.4;ctx.stroke();}
+    for(var i=0;i<n;i++){var p=pt(i,R);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p[0],p[1]);ctx.strokeStyle="rgba(201,180,255,.14)";ctx.lineWidth=1;ctx.stroke();}
+    ctx.beginPath();
+    for(var i=0;i<=n;i++){var v=vals[DIMS[i%n]]/100*anim.v;var p=pt(i%n,R*v);if(i===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);}
+    var grad=ctx.createRadialGradient(cx,cy,10,cx,cy,R);grad.addColorStop(0,"rgba(169,140,240,.65)");grad.addColorStop(1,"rgba(230,200,117,.32)");
+    ctx.fillStyle=grad;ctx.fill();
+    ctx.strokeStyle="#C9B4FF";ctx.lineWidth=2.5;ctx.shadowColor="rgba(169,140,240,.8)";ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;
+    for(var i=0;i<n;i++){var v=vals[DIMS[i]]/100*anim.v;var p=pt(i,R*v);ctx.beginPath();ctx.arc(p[0],p[1],4.5,0,2*Math.PI);ctx.fillStyle="#E6C875";ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=1.5;ctx.stroke();}
+    // labels
+    ctx.fillStyle="#F2ECFF";ctx.font="600 19px 'Noto Sans SC',sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
+    for(var i=0;i<n;i++){var p=pt(i,R+36);ctx.fillText(DIMS[i],p[0],p[1]);}
+    if(anim.v<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+
+function prepareDraw(){
+  var p=window._p;var tier=p.tier;
+  document.getElementById("drawScene").textContent="场景 · "+p.scene;
+  var fc=document.getElementById("cardFront");
+  fc.style.setProperty("--rc",RC[tier]);
+  fc.className="face front"+((tier==="SSR")?" foil":"");
+  fc.innerHTML="<div class='fc-top'><span class='fc-rare'>"+tier+"</span><span class='fc-pow'>综合战力<b>"+p.power+"</b>全网仅 "+p.rare+"%</span></div>"+
+    "<div class='fc-emoji'>"+(SCENES[sceneKey].emoji)+"</div>"+
+    "<div class='fc-name'>"+p.persona.name+"</div>"+
+    "<div class='fc-end'>「"+p.persona.end.split("\u3002")[0]+"。」</div>"+
+    "<div class='fc-foot'>FASHION TYPE · "+p.top+" 最强</div>";
+  document.getElementById("flipcard").classList.remove("flipped");
+  document.getElementById("drawTip").style.visibility="visible";
+  document.getElementById("toPanelBtn").style.display="none";
+  _cardFlipped=false;
+}
+var _cardFlipped=false;
+function flipCard(){
+  if(_cardFlipped)return;_cardFlipped=true;
+  document.getElementById("flipcard").classList.add("flipped");
+  document.getElementById("drawTip").style.visibility="hidden";
+  setTimeout(function(){
+    document.getElementById("toPanelBtn").style.display="block";
+    if(window._p.tier==="SSR"||window._p.tier==="SR")confettiBurst();
+  },520);
+}
+function confettiBurst(){
+  var cols=["#E6C875","#C9B4FF","#A98CF0","#F08AB0","#7BD6A8"];
+  for(var i=0;i<30;i++){(function(){
+    var el=document.createElement("div");el.className="confetti";
+    el.style.left=(Math.random()*100)+"%";el.style.background=cols[Math.floor(Math.random()*cols.length)];
+    document.body.appendChild(el);
+    var dur=1500+Math.random()*1300,drift=Math.random()*140-70;
+    el.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:"translate("+drift+"px,"+(window.innerHeight+60)+"px) rotate(600deg)",opacity:.9}],{duration:dur,easing:"cubic-bezier(.3,.6,.5,1)"});
+    setTimeout(function(){el.remove();},dur);
+  })();}
+}
+
+
+function makePoster(){
+  var p=window._p;var tier=p.tier;
+  var tc={SSR:"#E6C875",SR:"#C9B4FF",R:"#A98CF0",N:"#9B8FC4"}[tier];
+  var po=document.getElementById("poster");
+  po.style.setProperty("--ptc",tc);
+  po.innerHTML="<div class='pg'></div><div class='pg2'></div>"+
+    "<div class='pkr'>Fashion Power Test</div>"+
+    "<div class='pscene'>"+SCENES[sceneKey].emoji+" 场景 · "+p.scene+"</div>"+
+    "<div class='prare'><span class='tier'>"+tier+"</span><span class='pct'>全网仅 <b>"+p.rare+"%</b> 撞型</span></div>"+
+    "<div class='pname'>"+p.persona.name+"</div>"+
+    "<div class='pcanvas'><canvas id='pcanvas' width='460' height='400' style='width:230px;height:200px'></canvas></div>"+
+    "<div class='ppow'>综合战力 <b>"+p.power+"</b>　·　最强 <b>"+p.top+"</b></div>"+
+    "<div class='pend'>「"+p.persona.end.split("\u3002")[0]+"。」</div>"+
+    "<div class='pfoot'><span class='ft'>你是哪种？</span><span class='fs'>测测你的时尚综合战力</span></div>";
+  document.getElementById("posterMask").classList.add("show");
+  drawMiniRadar(p.vals);
+}
+function drawMiniRadar(vals){
+  var cv=document.getElementById("pcanvas");if(!cv)return;var ctx=cv.getContext("2d");
+  var W=cv.width,H=cv.height,cx=W/2,cy=H/2+6,R=Math.min(W,H)/2-58,n=DIMS.length;
+  function pt(i,r){var a=-Math.PI/2+i*2*Math.PI/n;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+  for(var g=1;g<=4;g++){ctx.beginPath();for(var i=0;i<=n;i++){var q=pt(i%n,R*g/4);if(i===0)ctx.moveTo(q[0],q[1]);else ctx.lineTo(q[0],q[1]);}ctx.strokeStyle="rgba(201,180,255,.2)";ctx.lineWidth=1;ctx.stroke();}
+  for(var i=0;i<n;i++){var q=pt(i,R);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(q[0],q[1]);ctx.strokeStyle="rgba(201,180,255,.14)";ctx.stroke();}
+  ctx.beginPath();for(var i=0;i<=n;i++){var v=vals[DIMS[i%n]]/100;var q=pt(i%n,R*v);if(i===0)ctx.moveTo(q[0],q[1]);else ctx.lineTo(q[0],q[1]);}
+  var gr=ctx.createRadialGradient(cx,cy,8,cx,cy,R);gr.addColorStop(0,"rgba(169,140,240,.6)");gr.addColorStop(1,"rgba(230,200,117,.32)");
+  ctx.fillStyle=gr;ctx.fill();ctx.strokeStyle="#C9B4FF";ctx.lineWidth=2;ctx.stroke();
+  for(var i=0;i<n;i++){var v=vals[DIMS[i]]/100;var q=pt(i,R*v);ctx.beginPath();ctx.arc(q[0],q[1],3,0,2*Math.PI);ctx.fillStyle="#E6C875";ctx.fill();}
+  ctx.fillStyle="#EDE6FF";ctx.font="500 13px 'Noto Sans SC',sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
+  for(var i=0;i<n;i++){var q=pt(i,R+24);ctx.fillText(DIMS[i],q[0],q[1]);}
+}
+function closePoster(){document.getElementById("posterMask").classList.remove("show");}
+function savePoster(){
+  var el=document.getElementById("poster");
+  if(typeof html2canvas==="undefined"){toastMsgP("长按或截图这张卡片就行～");return;}
+  toastMsgP("正在生成…");
+  var go=function(){
+    html2canvas(el,{scale:2,backgroundColor:null,useCORS:true,logging:false}).then(function(canvas){
+      try{var a=document.createElement("a");a.href=canvas.toDataURL("image/png");a.download="我的时尚人格-"+window._p.tier+".png";document.body.appendChild(a);a.click();document.body.removeChild(a);toastMsgP("已保存，去相册看看～");}
+      catch(e){toastMsgP("长按图片保存～");}
+    }).catch(function(){toastMsgP("长按或截图保存～");});
+  };
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(go);}else{go();}
+}
+function toastMsgP(m){var to=document.getElementById("toast");to.textContent=m;to.style.opacity="1";to.style.transform="translateX(-50%) translateY(0)";setTimeout(function(){to.style.opacity="0";to.style.transform="translateX(-50%) translateY(20px)";},2000);}
+
+function togglePersona(){
+  var el=document.getElementById("persona"),btn=document.getElementById("revealToggle");
+  if(el.style.display==="none"){el.style.display="block";btn.classList.add("open");btn.firstChild.textContent="收起人格解读 ";}
+  else{el.style.display="none";btn.classList.remove("open");btn.firstChild.textContent="点开看完整人格解读 ";}
+}
+function restart(){show("start");}
+function copyResult(){
+  var p=window._p;
+  var u=p.unlock?("\n\uD83C\uDFC6 解锁："+p.unlock.t):"";
+  var t="我在「"+p.scene+"」测出的时尚人格是【"+p.verdict+"】综合战力 "+p.power+u+"\n核心优势："+p.top+" "+p.vals[p.top]+"｜战略短板："+p.lo+" "+p.vals[p.lo]+"\n挂载形态："+p.buffs.map(function(b){return b.t;}).join("、")+"\n全网仅 "+p.rare+"% 撞型。你能在修罗场活到第几轮？ → 时尚综合战力测试";
+  var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);
+  var to=document.getElementById("toast");to.textContent="已复制，去炫吧～";to.style.opacity="1";to.style.transform="translateX(-50%) translateY(0)";
+  setTimeout(function(){to.style.opacity="0";to.style.transform="translateX(-50%) translateY(20px)";},2100);
+}
+renderScenes();
+</script>
+</body>
+</html>

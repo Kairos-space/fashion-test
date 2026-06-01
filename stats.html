@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>时尚物种图鉴 · 数据后台</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#E4E5E9;font-family:"Noto Sans SC",-apple-system,sans-serif;color:#2B2730;padding:24px 16px 60px;}
+  .wrap{max-width:680px;margin:0 auto;}
+  h1{font-family:Georgia,serif;font-size:26px;margin-bottom:4px;}
+  .sub{color:#9A93A0;font-size:13px;margin-bottom:24px;}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+  .card{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.7);border-radius:18px;padding:18px 14px;text-align:center;box-shadow:6px 6px 16px rgba(163,166,176,.4),-6px -6px 16px rgba(255,255,255,.7);}
+  .card .n{font-family:Georgia,serif;font-size:32px;color:#7A6AA8;}
+  .card .l{font-size:11px;color:#9A93A0;margin-top:4px;}
+  h2{font-size:15px;margin:24px 0 12px;display:flex;align-items:center;gap:8px;}
+  h2::before{content:"";width:3px;height:14px;background:#C9A86A;border-radius:2px;}
+  .row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;}
+  .row .name{width:175px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .row .bar{flex:1;height:18px;background:rgba(255,255,255,.5);border-radius:999px;overflow:hidden;box-shadow:inset 1px 1px 3px rgba(163,166,176,.4);}
+  .row .bar i{display:block;height:100%;background:linear-gradient(90deg,#A9D6C6,#C3B6E0);border-radius:999px;}
+  .row .v{width:54px;text-align:right;color:#6B6470;flex-shrink:0;font-variant-numeric:tabular-nums;}
+  .tier-ssr{background:linear-gradient(90deg,#E6C875,#C9A86A)!important;}
+  .loading{text-align:center;color:#9A93A0;padding:40px;}
+  .refresh{display:block;margin:0 auto 20px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.7);border-radius:999px;padding:8px 20px;font-size:13px;color:#7A6AA8;cursor:pointer;box-shadow:3px 3px 8px rgba(163,166,176,.4);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>时尚物种图鉴</h1>
+  <div class="sub">数据后台 · 仅你可见</div>
+  <button class="refresh" onclick="load()">↻ 刷新数据</button>
+  <div id="content"><div class="loading">加载中…</div></div>
+</div>
+<script>
+var SB_URL="https://jkstbwjhsauxmirrbxbf.supabase.co";
+var SB_KEY="sb_publishable_2-lXvJ11LFNtAui6mGLg0Q_nPdZmHOq";
+function load(){
+  document.getElementById("content").innerHTML='<div class="loading">加载中…</div>';
+  fetch(SB_URL+"/rest/v1/results?select=*&order=created_at.desc&limit=10000",{
+    headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY}
+  }).then(function(r){return r.json();}).then(function(data){
+    if(!Array.isArray(data)){document.getElementById("content").innerHTML='<div class="loading">读取失败，检查表是否建好</div>';return;}
+    render(data);
+  }).catch(function(e){
+    document.getElementById("content").innerHTML='<div class="loading">连接失败：'+e+'</div>';
+  });
+}
+function tally(arr,key){var m={};arr.forEach(function(x){var k=x[key]||"(空)";m[k]=(m[k]||0)+1;});return m;}
+function sortDesc(obj){return Object.keys(obj).map(function(k){return [k,obj[k]];}).sort(function(a,b){return b[1]-a[1];});}
+function barRows(pairs,total,tierColor){
+  return pairs.map(function(p){
+    var pct=total?Math.round(p[1]/total*100):0;
+    var cls=(tierColor&&p[0]==="SSR")?" tier-ssr":"";
+    return '<div class="row"><div class="name">'+p[0]+'</div><div class="bar"><i class="'+cls.trim()+'" style="width:'+pct+'%"></i></div><div class="v">'+p[1]+' · '+pct+'%</div></div>';
+  }).join("");
+}
+function render(data){
+  var total=data.length;
+  var today=new Date().toISOString().slice(0,10);
+  var todayN=data.filter(function(x){return (x.created_at||"").slice(0,10)===today;}).length;
+  var ssrN=data.filter(function(x){return x.tier==="SSR";}).length;
+  var html="";
+  html+='<div class="cards">';
+  html+='<div class="card"><div class="n">'+total+'</div><div class="l">总测试数</div></div>';
+  html+='<div class="card"><div class="n">'+todayN+'</div><div class="l">今日</div></div>';
+  html+='<div class="card"><div class="n">'+(total?Math.round(ssrN/total*100):0)+'%</div><div class="l">SSR 出率</div></div>';
+  html+='</div>';
+  html+='<h2>15 种人格分布</h2>'+barRows(sortDesc(tally(data,"persona")),total);
+  html+='<h2>场景热度</h2>'+barRows(sortDesc(tally(data,"scene")),total);
+  html+='<h2>稀有度分布</h2>'+barRows(sortDesc(tally(data,"tier")),total,true);
+  document.getElementById("content").innerHTML=html;
+}
+load();
+</script>
+</body>
+</html>

@@ -35,12 +35,13 @@
   .smallcaps{font-family:"Fraunces",serif;font-weight:500;letter-spacing:.24em;text-transform:uppercase;font-size:11px;color:var(--muted);}
   .rule{height:1px;background:var(--line);}
   /* start */
-  #start{justify-content:space-between;}
+  #start{justify-content:center;padding-top:22px;padding-bottom:30px;position:relative;}
+  .start-top{position:absolute;top:30px;left:24px;right:24px;}
   .top-row{display:flex;justify-content:space-between;align-items:center;}
-  .hero{margin-top:5vh;}
+  .hero{margin-top:0;}
   .hero .big{display:none;font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:clamp(54px,17vw,94px);line-height:.9;
     background:linear-gradient(120deg,var(--lilac2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 16px rgba(169,140,240,.4));}
-  .hero .zh{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-size:clamp(31px,9vw,44px);line-height:1.2;margin-top:12px;color:var(--ink);}
+  .hero .zh{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(40px,11.5vw,56px);line-height:1.08;margin-top:22px;color:var(--ink);letter-spacing:.01em;}
   .hero .zh .accent{color:var(--lilac2);}
   .hero .sub{margin-top:16px;font-size:14px;line-height:1.85;color:var(--muted);max-width:330px;}
   .scene-pick{display:flex;flex-direction:column;gap:10px;}
@@ -79,14 +80,14 @@
 
 
 
-  .masthead{display:flex;flex-direction:column;gap:10px;margin-top:2vh;}
+  .masthead{display:flex;flex-direction:column;gap:9px;margin-top:0;margin-bottom:0;}
   .mh-no{font-family:"Fraunces",serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--muted);}
   .mh-rule{height:1px;background:var(--line);}
-  .hero .zh{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(40px,12vw,58px);line-height:1.05;margin-top:7vh;color:var(--ink);letter-spacing:.01em;}
+  .hero .zh{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(38px,11vw,54px);line-height:1.08;margin-top:30px;color:var(--ink);letter-spacing:.01em;}
   .hero .zh .accent{font-style:italic;color:var(--lilac2);font-weight:400;}
   .hero .sub{margin-top:20px;font-size:14px;line-height:2;color:var(--muted);max-width:300px;font-weight:300;}
-  .home-cats{margin-top:30px;display:flex;flex-direction:column;gap:14px;}
-  .catbox{background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.3));backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);border:1px solid rgba(255,255,255,.65);border-radius:30px;box-shadow:8px 8px 22px rgba(163,166,176,.45),-8px -8px 22px rgba(255,255,255,.8),inset 0 1px 1px rgba(255,255,255,.6);overflow:hidden;}
+  .home-cats{margin-top:22px;display:flex;flex-direction:column;gap:16px;}
+  .catbox{margin:0;background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.3));backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);border:1px solid rgba(255,255,255,.65);border-radius:30px;box-shadow:8px 8px 22px rgba(163,166,176,.45),-8px -8px 22px rgba(255,255,255,.8),inset 0 1px 1px rgba(255,255,255,.6);overflow:hidden;}
   .home-cats .catbox:nth-child(1){background:linear-gradient(145deg,rgba(176,214,205,.5),rgba(255,255,255,.32));}
   .home-cats .catbox:nth-child(2){background:linear-gradient(145deg,rgba(232,198,210,.5),rgba(255,255,255,.32));}
   .cat{padding:20px 20px;cursor:pointer;display:flex;align-items:center;gap:15px;transition:background .25s;}
@@ -254,15 +255,12 @@
 <body>
 <div class="stage">
   <section class="screen active" id="start">
-    <div>
+    <div class="start-top">
       <div class="top-row"><span class="smallcaps">Fashion Power Test</span><span class="smallcaps">8 Scenes</span></div>
       <div class="rule" style="margin-top:10px"></div>
     </div>
     <div class="hero">
-      <div class="masthead">
-        <div class="mh-no">№ 001 — 2026</div>
-        <div class="mh-rule"></div>
-      </div>
+      
       <div class="zh">时尚人格<br><span class="accent">综合战力测试</span></div>
       <div class="sub">六道题，一次抽卡。<br>看穿你穿衣服时，藏起来的那点小心思。</div>
       <div class="home-cats">
@@ -283,7 +281,7 @@
           <div class="cat-scenes" id="scenes-hi"></div>
         </div>
       </div>
-      <div class="credit" style="margin-top:26px">A FASHION TYPE INDICATOR</div>
+      <div class="credit" style="margin-top:20px">A FASHION TYPE INDICATOR</div>
     </section>
 
     <section class="screen" id="quiz">

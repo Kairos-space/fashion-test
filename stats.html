@@ -46,6 +46,31 @@ function load(){
     document.getElementById("content").innerHTML='<div class="loading">连接失败：'+e+'</div>';
   });
 }
+
+// 长名→外号 对照表（方案B：不动数据库，前端翻译显示）
+var NICK={
+ "深夜便利店的高定超模":"高定买菜王",
+ "茶水间穿搭纪检委":"品牌鉴假科主任",
+ "任凭主播喊破喉咙也抠不出钱的活佛":"消费主义绝缘体",
+ "因为太懂，所以破产":"知识越多越穷老师",
+ "全靠狗屎运穿对的天选盲抓流":"老天爷追着喂饭",
+ "高傲得要死，绝不当抢爆款的韭菜":"爆款过敏体质",
+ "精致穷本穷":"月光时装总监",
+ "全身上下全是包袱":"人间易碎品",
+ "风格百变，卡里没钱":"破产艺术家",
+ "服装在大声蹦迪，人想当场隐形":"社恐炸街犯",
+ "穿搭界口嗨战神":"云端造型总监",
+ "大拇指有独立人格":"付款手失控患者",
+ "买的时候是个战神，上身像个灾难":"试衣间诈骗受害者",
+ "饭可以不吃，排面必须拉满":"排面终身会员",
+ "勇气冲天，审美打架":"时尚敢死队"
+};
+function toNick(longName){
+  if(!longName)return "(空)";
+  // 优先精确匹配；匹配不上就返回原名（兼容老数据/未来改名）
+  return NICK[longName]||longName;
+}
+
 function tally(arr,key){var m={};arr.forEach(function(x){var k=x[key]||"(空)";m[k]=(m[k]||0)+1;});return m;}
 function sortDesc(obj){return Object.keys(obj).map(function(k){return [k,obj[k]];}).sort(function(a,b){return b[1]-a[1];});}
 function barRows(pairs,total,tierColor){
@@ -66,7 +91,8 @@ function render(data){
   html+='<div class="card"><div class="n">'+todayN+'</div><div class="l">今日</div></div>';
   html+='<div class="card"><div class="n">'+(total?Math.round(ssrN/total*100):0)+'%</div><div class="l">SSR 出率</div></div>';
   html+='</div>';
-  html+='<h2>15 种人格分布</h2>'+barRows(sortDesc(tally(data,"persona")),total);
+  var personaTally={};data.forEach(function(x){var nk="《"+toNick(x.persona)+"》";personaTally[nk]=(personaTally[nk]||0)+1;});
+  html+='<h2>15 种人格分布</h2>'+barRows(sortDesc(personaTally),total);
   html+='<h2>场景热度</h2>'+barRows(sortDesc(tally(data,"scene")),total);
   html+='<h2>稀有度分布</h2>'+barRows(sortDesc(tally(data,"tier")),total,true);
   document.getElementById("content").innerHTML=html;
